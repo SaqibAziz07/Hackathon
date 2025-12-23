@@ -1,17 +1,20 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBzwrKqwuzEv4edoyEIIHG0403oeIpgumk",
-    authDomain: "farooq-e8271.firebaseapp.com",
-    projectId: "farooq-e8271",
-    storageBucket: "farooq-e8271.firebasestorage.app",
-    messagingSenderId: "191983447841",
-    appId: "1:191983447841:web:6f2695a26e67f3f3551860"
+    apiKey: "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4",
+    authDomain: "pitch-craft-a20f2.firebaseapp.com",
+    projectId: "pitch-craft-a20f2",
+    storageBucket: "pitch-craft-a20f2.firebasestorage.app",
+    messagingSenderId: "912823133018",
+    appId: "1:912823133018:web:0b46413e38559cd2014963",
+    measurementId: "G-4EMWVMF2ZL"
   };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
+
 // DOM Elements
+const username = document.getElementById('reg-username').value.trim();
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const loginFormElement = document.getElementById('loginForm');
@@ -79,7 +82,7 @@ loginFormElement.addEventListener('submit', (e) => {
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log("Login successful:", userCredential.user.email);
-        window.open('dashboard.html', '_blank');
+        window.location.href = 'dashboard.html';
         loginLoading.style.display = 'none';
         loginFormElement.reset();
       })
@@ -95,22 +98,15 @@ loginFormElement.addEventListener('submit', (e) => {
 registerFormElement.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const username = document.getElementById('reg-username').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
   const confirmPassword = document.getElementById('reg-confirm-password').value;
 
-  const usernameError = document.getElementById('reg-username-error');
   const emailError = document.getElementById('reg-email-error');
   const passwordError = document.getElementById('reg-password-error');
   const confirmPasswordError = document.getElementById('reg-confirm-password-error');
 
   let isValid = true;
-
-  if (username.length < 2) {
-    usernameError.style.display = 'block';
-    isValid = false;
-  } else usernameError.style.display = 'none';
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {

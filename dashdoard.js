@@ -1,10 +1,11 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBzwrKqwuzEv4edoyEIIHG0403oeIpgumk",
-    authDomain: "farooq-e8271.firebaseapp.com",
-    projectId: "farooq-e8271",
-    storageBucket: "farooq-e8271.firebasestorage.app",
-    messagingSenderId: "191983447841",
-    appId: "1:191983447841:web:6f2695a26e67f3f3551860"
+    apiKey: "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4",
+    authDomain: "pitch-craft-a20f2.firebaseapp.com",
+    projectId: "pitch-craft-a20f2",
+    storageBucket: "pitch-craft-a20f2.firebasestorage.app",
+    messagingSenderId: "912823133018",
+    appId: "1:912823133018:web:0b46413e38559cd2014963",
+    measurementId: "G-4EMWVMF2ZL"
   };
 
 firebase.initializeApp(firebaseConfig);

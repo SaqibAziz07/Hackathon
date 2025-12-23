@@ -4,89 +4,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Hackathon</title>
+  <title>Pitch Craft | Modern Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&family=Instrument+Serif&family=Outfit:wght@400;700&display=swap"
+    rel="stylesheet">
+
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="bg-blur"></div>
+
   <div class="container">
-    <!-- Login Form -->
-    <div class="form-container" id="login-form">
-      <h2 style="text-decoration:underline;">Pitch Craft</h2>
-      <div class="success-message" id="logout-success">You have been successfully logged out.</div>
-      <div class="success-message" id="register-success">Account created successfully! Please log in.</div>
-      <div class="error-message-global" id="login-error">Invalid email or password. Please try again.</div>
+    <div class="form-card" id="login-form">
+      <div class="header">
+        <h1>Pitch Craft</h1>
+        <p>Welcome back! Please enter your details.</p>
+      </div>
+
+      <div class="alert success" id="logout-success">Logged out successfully.</div>
+      <div class="alert error" id="login-error">Invalid credentials.</div>
 
       <form id="loginForm">
         <div class="input-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email">
-          <div class="error-message" id="email-error">Please enter a valid email</div>
+          <input type="email" id="email" required placeholder=" ">
+          <label>Email Address</label>
         </div>
 
         <div class="input-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password">
-          <div class="error-message" id="password-error">Please enter your password</div>
+          <input type="password" id="password" required placeholder=" ">
+          <label>Password</label>
         </div>
 
-        <div class="loading" id="login-loading">
-          <div class="spinner"></div>
-        </div>
-
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="primary-btn">Sign In</button>
       </form>
 
-      <div class="toggle-text">
-        Don't have an account? <span class="toggle-link" id="show-register">Sign up</span>
+      <div class="footer-text">
+        New here? <span class="toggle-link" id="show-register">Create an account</span>
       </div>
+      <div class="alert error" id="email-error">Email required</div>
+      <div class="alert error" id="password-error">Password required</div>
+      <div class="alert succes" id="login-loading">Logging in...</div>
+
     </div>
 
-    <!-- Signup Form -->
-    <div class="form-container" id="register-form" style="display: none;">
-      <h2>Create Account</h2>
-      <div class="error-message-global" id="register-error">Error creating account. Please try again.</div>
+    <div class="form-card" id="register-form" style="display: none;">
+      <div class="header">
+        <h1>Join us</h1>
+        <p>Start your journey with Pitch Craft.</p>
+      </div>
 
       <form id="registerForm">
         <div class="input-group">
-          <label for="reg-username">Full Name</label>
-          <input type="text" id="reg-username" placeholder="Enter your full name">
-          <div class="error-message" id="reg-username-error">Name must be at least 2 characters</div>
+          <input type="text" id="reg-username" required placeholder=" ">
+          <label>Full Name</label>
         </div>
-
         <div class="input-group">
-          <label for="reg-email">Email</label>
-          <input type="email" id="reg-email" placeholder="Enter your email">
-          <div class="error-message" id="reg-email-error">Please enter a valid email</div>
+          <input type="email" id="reg-email" required placeholder=" ">
+          <label>Email</label>
         </div>
-
         <div class="input-group">
-          <label for="reg-password">Password</label>
-          <input type="password" id="reg-password" placeholder="Create a password">
-          <div class="error-message" id="reg-password-error">Password must be at least 6 characters</div>
+          <input type="password" id="reg-password" required placeholder=" ">
+          <label>Password</label>
         </div>
-
         <div class="input-group">
-          <label for="reg-confirm-password">Confirm Password</label>
-          <input type="password" id="reg-confirm-password" placeholder="Confirm your password">
-          <div class="error-message" id="reg-confirm-password-error">Passwords do not match</div>
+          <input type="password" id="reg-confirm-password" required placeholder=" ">
+          <label>Password</label>
         </div>
-
-        <div class="loading" id="register-loading">
-          <div class="spinner"></div>
-        </div>
-
-        <button type="submit" class="btn">Sign Up</button>
+        <button type="submit" class="primary-btn">Create Account</button>
       </form>
 
-      <div class="toggle-text">
-        Already have an account? <span class="toggle-link" id="show-login">Sign in</span>
+      <div class="footer-text">
+        Already a member? <span class="toggle-link" id="show-login">Log in</span>
       </div>
+      <div class="alert error" id="reg-username-error">Name too short</div>
+      <div class="alert error" id="reg-email-error">Invalid email</div>
+      <div class="alert error" id="reg-password-error">Min 6 characters password</div>
+      <div class="alert error" id="reg-confirm-password-error">Passwords do not match</div>
+      <div class="alert success" id="register-success">Account created!</div>
+      <div class="alert success" id="register-loading">Creating account...</div>
+      <div class="alert error" id="register-error"></div>
     </div>
   </div>
-
   <script src="app.js"></script>
 </body>
+
 </html>

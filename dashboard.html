@@ -4,567 +4,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pitch_Craft</title>
+    <title>PitchCraft AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&family=Instrument+Serif&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
+
     <style>
-        /* Custom scrollbar and aesthetics */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fc;
-            min-height: 100vh;
+            font-family: 'Instrument Serif', sans-serif;
         }
 
-        .pitch-card {
-            background-color: #ffffff;
-            border-left: 5px solid #8dceb8;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+        .glass-card {
+            background: #f8fafc;
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .pitch-card:hover {
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
 
-        /* Custom Button Styling */
-        #generate-button {
-            background-color: rgb(20, 167, 20);
-            transition: all 0.15s ease;
-            box-shadow: 0 4px 6px -1px rgba(90, 93, 92, 0.3), 0 2px 4px -1px rgba(62, 93, 83, 0.1);
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        #generate-button:hover {
-            background-color: #617d74;
-            transform: translateY(-1px);
-        }
-
-        #generate-button:active {
-            transform: translateY(1px);
-            box-shadow: none;
-        }
-
-        /* Styling for the output area */
-        #pitch-output pre {
-            white-space: pre-wrap;
+        #pitch-output {
+            max-height: auto;
+            overflow-y: auto;
             word-wrap: break-word;
-            padding: 1rem;
-            border-radius: 0.5rem;
+            white-space: pre-wrap;
             background-color: #f0fdf4;
             border: 1px solid #d1fae5;
+            border-radius: 0.5rem;
+            padding: 1rem;
         }
 
-        /* --- START Dashboard Custom Styles (Aapke code se liye gaye) --- */
-        .user-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: #66a993;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1rem;
+        #output-text {
+            font-family: "Outfit", sans-serif;
         }
-
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #ebefee;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* --- END Dashboard Custom Styles --- */
     </style>
 </head>
-    <body class="min-h-screen bg-gradient-to-b from-[#E8F3FC] to-[#F9FBFD] flex flex-col items-center justify-center px-4 sm:px-6 py-10">
 
-  <!-- HEADER -->
-  <header class="text-center mb-12">
-    <h1 class="text-5xl font-extrabold text-gray-900 tracking-tight">
-      PitchCraft 
-      <span class="bg-gradient-to-r from-[#40A2E3] to-[#2E8BE6] bg-clip-text text-transparent">AI</span>
-    </h1>
-    <p class="mt-3 text-lg text-gray-600">
-      Transform your startup idea into a powerful <span class="text-[#40A2E3] font-semibold">AI-crafted pitch</span>.
-    </p>
-  </header>
+<body class="bg-gradient-to-b from-[#E8F3FC] to-[#F9FBFD] min-h-screen flex flex-col">
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-
-    <!-- LEFT FORM -->
-    <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-      <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6 border-b pb-4">
-        🚀 Generate Your Startup Pitch
-      </h2>
-
-      <form id="pitch-form" class="space-y-5">
-        <!-- Startup Name -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Startup Name</label>
-          <input id="startup-name" type="text" placeholder="e.g., HealthMate"
-            class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition" required>
-        </div>
-
-        <!-- Problem -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">The Problem</label>
-          <textarea id="problem" rows="3" placeholder="Describe the problem your startup solves..."
-            class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition" required></textarea>
-        </div>
-
-        <!-- Solution -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Your Solution / Product</label>
-          <textarea id="solution" rows="3" placeholder="Explain how your startup provides a solution..."
-            class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition" required></textarea>
-        </div>
-
-        <!-- Submit -->
-        <button id="generate-button" type="submit"
-          class="w-full py-3 rounded-lg bg-gradient-to-r from-[#40A2E3] to-[#2E8BE6] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-200">
-          ✨ Generate Pitch
-        </button>
-      </form>
-
-      <!-- Loading -->
-      <div id="loading"
-        class="mt-6 hidden text-center text-sky-700 bg-sky-50 rounded-lg py-3 font-medium animate-pulse">
-        Generating your pitch... Please wait.
-      </div>
-
-      <!-- Result -->
-      <section id="pitch-output" class="mt-10 hidden">
-        <h3 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">Your Generated Pitch</h3>
-
-        <div id="output-text"
-          class="bg-gradient-to-br from-sky-50 to-white border border-sky-100 p-5 rounded-xl text-gray-800 shadow-inner prose prose-sky max-w-none leading-relaxed">
-          <!-- AI output will appear here -->
-        </div>
-
-        <div id="citation-sources" class="mt-5 text-sm text-gray-500"></div>
-      </section>
-    </div>
-
-    <!-- RIGHT DASHBOARD -->
-    <div class="space-y-6">
-      <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-        <div id="user-status-container">
-          <div id="dashboard-loading" class="text-center">
-            <div class="mx-auto mb-2 w-6 h-6 border-4 border-gray-200 border-t-[#40A2E3] rounded-full animate-spin"></div>
-            <p class="text-gray-500 text-sm">Authenticating...</p>
-          </div>
-
-          <div id="dashboard" class="hidden">
-            <div class="w-12 h-12 mx-auto bg-[#40A2E3] text-white flex items-center justify-center rounded-full text-xl font-bold mb-2"
-              id="user-avatar">U</div>
-            <h2 class="text-lg font-semibold text-gray-700">Welcome, <span id="user-display" class="text-[#40A2E3]">User</span></h2>
-            <p class="text-sm text-gray-500">You're signed in securely.</p>
-            <p class="text-xs text-gray-400 mt-1 break-all" id="user-email">[Loading...]</p>
+    <!-- NAVBAR -->
+    <nav class="w-full bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-[#4338ca]">PitchCraft AI</h1>
+        <div class="flex items-center space-x-4">
+            <span id="user-display" class="font-medium text-gray-700"></span>
             <button id="logout-btn"
-              class="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition">
-              Logout
-            </button>
-          </div>
+                class="px-4 py-2 bg-[#4338ca] hover:bg-[$4f46e5] text-white rounded-lg transition">Sign
+                Out</button>
         </div>
-      </div>
+    </nav>
 
-      <!-- History -->
-      <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-        <h2 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">Pitch History</h2>
-        <div id="pitch-history" class="max-h-[600px] overflow-y-auto space-y-3 text-sm">
-          <p id="loading-history" class="text-center text-gray-400">Loading history...</p>
+    <!-- HERO SECTION -->
+    <section
+        class="text-center py-20 px-6 lg:px-20 bg-gradient-to-r from-[#40A2E3] to-[#2E8BE6] text-white relative overflow-hidden">
+        <h1 class="text-5xl lg:text-6xl font-extrabold mb-4">Transform Your Startup Idea</h1>
+        <p class="text-xl lg:text-2xl mb-8">Generate a powerful AI-crafted pitch in seconds and impress investors.</p>
+        <button id="hero-cta"
+            class="px-6 py-3 bg-white text-[#40A2E3] font-semibold rounded-lg shadow-lg hover:shadow-xl transition">Generate
+            Your Pitch</button>
+        <div class="absolute top-0 left-0 w-72 h-72 bg-white opacity-10 rounded-full filter blur-3xl -z-10"></div>
+        <div class="absolute bottom-0 right-0 w-72 h-72 bg-white opacity-10 rounded-full filter blur-3xl -z-10"></div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex flex-col lg:flex-row justify-center gap-10 px-6 lg:px-20 mt-12 mb-20">
+
+        <!-- AI PITCH GENERATOR -->
+        <div class="lg:w-2/3 glass-card p-8 shadow-xl">
+            <h2 class="text-2xl font-semibold text-[#4338ca] mb-6 border-b pb-4 text-center">🚀 Generate Your Startup
+                Pitch</h2>
+
+            <form id="pitch-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-[#4338ca]">Startup Name</label>
+                    <input id="startup-name" type="text" placeholder="e.g., HealthMate"
+                        class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                        required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#4338ca]">The Problem</label>
+                    <textarea id="problem" rows="3" placeholder="Describe the problem..."
+                        class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                        required></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#4338ca]">Your Solution / Product</label>
+                    <textarea id="solution" rows="3" placeholder="Explain your solution..."
+                        class="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                        required></textarea>
+                </div>
+
+                <button id="generate-button" type="submit"
+                    class="w-full py-3 bg-gradient-to-r from-[#4338ca] to-[#2E8BE6] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    ✨ Generate Pitch
+                </button>
+            </form>
+
+            <!-- Loading -->
+            <div id="loading"
+                class="mt-6 hidden text-center text-sky-700 bg-sky-50 rounded-lg py-3 font-medium animate-pulse">
+                Generating your pitch... Please wait.
+            </div>
+
+            <!-- Output -->
+            <section id="pitch-output" class="mt-10 hidden">
+                <h3 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">Your Generated Pitch</h3>
+                <div id="output-text"
+                    class="bg-gradient-to-br from-sky-50 to-white border border-sky-100 p-5 rounded-xl text-gray-800 shadow-inner prose break-words overflow-x-auto max-w-200px leading-relaxed">
+                </div>
+
+                <div id="citation-sources" class="mt-5 text-sm text-gray-500"></div>
+            </section>
         </div>
-      </div>
-    </div>
-  </main>
 
-  <!-- Delete Confirmation Modal -->
-  <div id="delete-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-xl max-w-sm mx-4">
-      <h3 class="text-lg font-semibold text-gray-800 mb-3">Confirm Delete</h3>
-      <p class="text-gray-600 mb-5">Are you sure you want to delete this pitch? This action cannot be undone.</p>
-      <div class="flex justify-end space-x-3">
-        <button id="cancel-delete" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Cancel</button>
-        <button id="confirm-delete" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Delete</button>
-      </div>
-    </div>
-  </div>
+        <!-- HISTORY / DASHBOARD -->
+        <div class="lg:w-1/3 glass-card p-6 shadow-xl flex flex-col">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2 text-center">Pitch History</h2>
+            <div id="pitch-history" class="overflow-y-auto max-h-[600px] space-y-3 scrollbar-hide">
+                <p id="loading-history" class="text-center text-gray-400">Loading history...</p>
+            </div>
+        </div>
+    </main>
 
-    <script type="module">
+    <!-- Firebase JS -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, collection, query, onSnapshot, setDoc, deleteDoc, serverTimestamp, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4",
+            authDomain: "pitch-craft-a20f2.firebaseapp.com",
+            projectId: "pitch-craft-a20f2",
+            storageBucket: "pitch-craft-a20f2.firebasestorage.app",
+            messagingSenderId: "912823133018",
+            appId: "1:912823133018:web:0b46413e38559cd2014963",
+            measurementId: "G-4EMWVMF2ZL"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // Global Firebase Variables (Canvas se milne wale zaruri variables)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-pitchcraft-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // DOM
+        const logoutBtn = document.getElementById('logout-btn');
+        const userDisplay = document.getElementById('user-display');
+        const userAvatar = document.getElementById('user-avatar');
+        const pitchHistory = document.getElementById('pitch-history');
+        const loadingHistory = document.getElementById('loading-history');
 
-        let db, auth, userId = null;
-        const form = document.getElementById('pitch-form');
-        const generateButton = document.getElementById('generate-button');
-        const loadingDiv = document.getElementById('loading');
-        const pitchOutputSection = document.getElementById('pitch-output');
-        const outputTextDiv = document.getElementById('output-text');
-        const historyDiv = document.getElementById('pitch-history');
-        const loadingHistoryP = document.getElementById('loading-history');
-        const citationSourcesDiv = document.getElementById('citation-sources');
-
-        // --- NEW DASHBOARD ELEMENTS (Naye Dashboard Elements) ---
-        const dashboardDiv = document.getElementById('dashboard');
-        const dashboardLoadingDiv = document.getElementById('dashboard-loading');
-        const userAvatarSpan = document.getElementById('user-avatar');
-        const userDisplaySpan = document.getElementById('user-display');
-        const userEmailSpan = document.getElementById('user-email');
-        const logoutButton = document.getElementById('logout-btn');
-        // --- END NEW DASHBOARD ELEMENTS ---
-
-        const deleteModal = document.getElementById('delete-modal');
-        const confirmDeleteButton = document.getElementById('confirm-delete');
-        const cancelDeleteButton = document.getElementById('cancel-delete');
-
-        // --- Firebase Initialization and Authentication --- (Firebase Shuruat aur Tasdeeq)
-        function initializeFirebase() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                // Set up Authentication Listener
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-
-                        // Show User Details (User ki Tafseelat Dikhana)
-                        userDisplaySpan.textContent = 'PitchCrafter';
-                        userAvatarSpan.textContent = userId.charAt(0).toUpperCase();
-                        userEmailSpan.textContent = userId;
-
-                        // Toggle UI visibility
-                        dashboardLoadingDiv.style.display = 'none';
-                        dashboardDiv.style.display = 'block';
-
-                        setupPitchHistoryListener(); // Start listening for history once authenticated
-                    } else {
-                        // Attempt to sign in with custom token or anonymously
-                        dashboardDiv.style.display = 'none';
-                        dashboardLoadingDiv.style.display = 'block';
-
-                        if (initialAuthToken) {
-                            await signInWithCustomToken(auth, initialAuthToken);
-                        } else {
-                            await signInAnonymously(auth);
-                            // userId will be set by the 'user' block above upon successful sign-in
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error("Firebase Initialization Error (Firebase Shuruat Ka Masla):", error);
-                dashboardDiv.textContent = `ERROR: Firebase failed to initialize. (Firebase shuru karne mein masla hua.)`;
-            }
-        }
-
-        // --- Logout Functionality --- (Logout Ka Kaam)
-        logoutButton.addEventListener('click', async () => {
-            try {
-                // Sign out the user
-                await signOut(auth);
-                // onAuthStateChanged will handle the UI update and attempt to sign in anonymously again
-                console.log("User signed out successfully. Re-authenticating anonymously for continuity.");
-            } catch (error) {
-                console.error("Logout Error (Logout Mein Masla):", error);
-                // Optionally show a user-facing error message
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                userDisplay.textContent = user.displayName || user.email;
+                userAvatar.textContent = (user.displayName ? user.displayName.charAt(0) : user.email.charAt(0)).toUpperCase();
+                fetchPitchHistory(user.uid);
+            } else {
+                window.location.href = 'index.html';
             }
         });
 
-        // --- Firestore History Management --- (Firestore Tarikh Ka Intezaam)
-        function getPitchCollectionRef(uid) {
-            // Private data storage: /artifacts/{appId}/users/{userId}/pitches
-            return collection(db, 'artifacts', appId, 'users', uid, 'pitches');
-        }
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => console.log("Logged out"));
+        });
 
-        function setupPitchHistoryListener() {
-            if (!userId) {
-                console.error("Cannot set up listener: User ID is missing.");
-                return;
-            }
-
-            const pitchesRef = getPitchCollectionRef(userId);
-            const q = query(pitchesRef);
-
-            // Real-time listener for pitches
-            onSnapshot(q, (snapshot) => {
-                const pitches = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    // Deserialize the text content if it was stored as JSON string (best practice for complex text)
-                    try {
-                        data.pitchText = data.pitchText ? JSON.parse(data.pitchText) : 'No content';
-                    } catch {
-                        // If it's not JSON, assume it's plain text (fallback)
-                    }
-
-                    pitches.push({ id: doc.id, ...data });
-                });
-
-                // Sort by creation time, latest first
-                pitches.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-
-                renderPitchHistory(pitches);
-            }, (error) => {
-                console.error("Error listening to pitches (Pitches sunne mein masla):", error);
-                historyDiv.innerHTML = `<p class="text-red-500">Error loading history: ${error.message}</p>`;
-            });
-        }
-
-        function renderPitchHistory(pitches) {
-            historyDiv.innerHTML = ''; // Clear existing content
-            loadingHistoryP.classList.add('hidden'); // Hide loading indicator
-
-            if (pitches.length === 0) {
-                historyDiv.innerHTML = `<p class="text-center text-gray-500 italic p-4">No pitches saved yet. (Abhi tak koi pitch save nahi ki gayi.)</p>`;
-                return;
-            }
-
-            pitches.forEach(pitch => {
-                const pitchCard = document.createElement('div');
-                pitchCard.className = 'pitch-card p-4 rounded-lg border border-gray-200';
-
-                const date = pitch.createdAt ? new Date(pitch.createdAt.toDate()).toLocaleDateString() : 'N/A';
-
-                pitchCard.innerHTML = `
-                    <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-md font-semibold text-gray-800">${pitch.startupName || 'Untitled Pitch'}</h4>
-                        <button data-id="${pitch.id}" class="delete-pitch text-red-500 hover:text-red-700 transition" title="Delete Pitch (Pitch Hataein)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                    <p class="text-sm text-gray-600 truncate">${pitch.problem || 'No Problem Defined'}</p>
-                    <p class="text-xs text-gray-400 mt-1">Date: ${date}</p>
-                `;
-                historyDiv.appendChild(pitchCard);
-            });
-
-            // Attach delete listeners
-            historyDiv.querySelectorAll('.delete-pitch').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const pitchIdToDelete = e.currentTarget.dataset.id;
-                    openDeleteModal(pitchIdToDelete);
-                });
-            });
-        }
-
-        function openDeleteModal(pitchId) {
-            deleteModal.classList.remove('hidden');
-            deleteModal.classList.add('flex');
-            // Set up handlers for the modal
-            confirmDeleteButton.onclick = () => deletePitch(pitchId);
-            cancelDeleteButton.onclick = closeDeleteModal;
-        }
-
-        function closeDeleteModal() {
-            deleteModal.classList.add('hidden');
-            deleteModal.classList.remove('flex');
-        }
-
-        async function deletePitch(pitchId) {
-            closeDeleteModal();
-            if (!userId) {
-                console.error("Cannot delete pitch: User not authenticated.");
-                return;
-            }
-            try {
-                const pitchRef = doc(getPitchCollectionRef(userId), pitchId);
-                await deleteDoc(pitchRef);
-                console.log("Pitch deleted successfully:", pitchId);
-            } catch (error) {
-                console.error("Error deleting pitch (Pitch hataane mein masla):", error);
-                // Optionally show an error message to the user
-            }
-        }
-
-        async function savePitch(startupName, problem, solution, pitchText) {
-            if (!userId) {
-                console.error("Cannot save pitch: User not authenticated.");
-                return;
-            }
-            try {
-                // Generate a unique ID for the document first
-                const newDocRef = doc(getPitchCollectionRef(userId));
-
-                // Serialize the generated text to a JSON string before saving (best practice)
-                const textToSave = JSON.stringify(pitchText);
-
-                await setDoc(newDocRef, {
-                    startupName,
-                    problem,
-                    solution,
-                    pitchText: textToSave,
-                    createdAt: serverTimestamp(),
-                    userId: userId // Optional: helpful for security rules and debugging
-                });
-                console.log("Pitch saved successfully (Pitch Mehfooz ho gaya):", newDocRef.id);
-            } catch (error) {
-                console.error("Error saving pitch (Pitch save karne mein masla):", error);
-            }
-        }
-
-        // --- Gemini API Logic --- (Gemini API Ka Kaam)
-
-        const systemPrompt = `You are PitchCraft, an elite startup pitch ghostwriter and investor expert. Your task is to generate a compelling, concise, and structured elevator pitch (around 200-300 words) based on the user's input (Startup Name, Problem, Solution).
-        The pitch MUST follow this structure:
-        1. **HOOK:** A short, attention-grabbing opening.
-        2. **PROBLEM:** Clearly state the user's defined problem and its scope.
-        3. **SOLUTION:** Introduce the startup's name and its unique solution/product.
-        4. **TRACTION/MARKET (Inferred):** Briefly mention market potential, competitive advantage, or early success (even if inferred or generic).
-        5. **ASK/CONCLUSION:** A strong closing statement inviting the listener to the next step.
-        Format the output using Markdown with bold headings for clarity. Do not include any conversational filler outside of the structured pitch.`;
-
-        async function generatePitch(startupName, problem, solution) {
-            const userQuery = `
-            Please generate the startup pitch using the following details:
-            Startup Name: ${startupName}
-            The Problem: ${problem}
-            The Solution: ${solution}
-            `;
-
-            const apiKey = "AIzaSyCR8eN3ETLnYz-_H72VdT_oCrxcrPufHB4"; // Canvas will provide this
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                // Use Google Search grounding for real-time context and market trends
-                tools: [{ "google_search": {} }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            const maxRetries = 3;
-            let attempt = 0;
-
-            while (attempt < maxRetries) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        // If response is not OK, throw error to trigger retry logic
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        const text = candidate.content.parts[0].text;
-                        let sources = [];
-
-                        // Extract grounding sources
-                        const groundingMetadata = candidate.groundingMetadata;
-                        if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                            sources = groundingMetadata.groundingAttributions
-                                .map(attribution => ({
-                                    uri: attribution.web?.uri,
-                                    title: attribution.web?.title,
-                                }))
-                                .filter(source => source.uri && source.title);
-                        }
-
-                        return { text, sources };
-                    } else {
-                        // Handle cases where model failed to generate text
-                        throw new Error("Model response was empty or malformed.");
-                    }
-
-                } catch (error) {
-                    console.error(`Attempt ${attempt + 1} failed:`, error.message);
-                    attempt++;
-                    if (attempt < maxRetries) {
-                        // Exponential backoff
-                        const delay = Math.pow(2, attempt) * 1000;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    } else {
-                        // Final failure
-                        throw new Error("Failed to generate pitch after multiple retries. (Kai baar koshish ke baad bhi pitch nahi ban saka.)");
-                    }
+        // Pitch History
+        function fetchPitchHistory(uid) {
+            const pitchesRef = db.collection('users').doc(uid).collection('pitches');
+            pitchesRef.orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                pitchHistory.innerHTML = '';
+                if (snapshot.empty) {
+                    pitchHistory.innerHTML = '<p class="text-center text-gray-500 italic p-4">No pitches saved yet.</p>';
+                    return;
                 }
-            }
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+                    const card = document.createElement('div');
+                    card.className = 'p-4 bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition';
+                    card.innerHTML = `
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="text-md font-semibold text-gray-800">${data.startupName || 'Untitled'}</h4>
+              <button onclick="deletePitch('${doc.id}')" class="text-red-500 hover:text-red-700">Delete</button>
+            </div>
+            <p class="text-sm text-gray-600 truncate">${data.problem || 'No Problem'}</p>
+            <p class="text-xs text-gray-400 mt-1">Date: ${date}</p>
+          `;
+                    pitchHistory.appendChild(card);
+                });
+            });
         }
 
-        // --- Event Listener and Main Handler --- (Event Sunne Wala aur Asli Kaam Karne Wala)
+        function deletePitch(pitchId) {
+            const user = auth.currentUser;
+            if (!user) return;
+            db.collection('users').doc(user.uid).collection('pitches').doc(pitchId).delete();
+        }
 
-        form.addEventListener('submit', async (e) => {
+        // AI Pitch Generator Logic
+        const pitchForm = document.getElementById('pitch-form');
+        const generateButton = document.getElementById('generate-button');
+        const loading_Div = document.getElementById('loading');
+        const pitchOutput = document.getElementById('pitch-output');
+        const outputText = document.getElementById('output-text');
+        const citationSourcesDiv = document.getElementById('citation-sources');
+
+        pitchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            // Input Validation
             const startupName = document.getElementById('startup-name').value.trim();
             const problem = document.getElementById('problem').value.trim();
             const solution = document.getElementById('solution').value.trim();
 
-            if (!startupName || !problem || !solution) {
-                outputTextDiv.innerHTML = '<p class="text-red-500 font-semibold">Please fill in all fields. (Kirpya sabhi khali jaghein bhar dein.)</p>';
-                // Make sure the output section is visible to show the error
-                pitchOutputSection.classList.remove('hidden');
-                return;
-            }
+            if (!startupName || !problem || !solution) return;
 
-            loadingDiv.classList.remove('hidden');
+            loading_Div.classList.remove('hidden');
             generateButton.disabled = true;
-            outputTextDiv.innerHTML = '';
+            outputText.innerHTML = '';
             citationSourcesDiv.innerHTML = '';
 
             try {
-                const result = await generatePitch(startupName, problem, solution);
+                // Prepare the payload for the AI API
+                const systemPrompt = `You are PitchCraft, an expert startup pitch generator. 
+                    Generate a concise, structured pitch (200-300 words) using this input.`;
 
-                // 1. Display the Pitch (Pitch Dikhana)
-                // Use <pre> to maintain formatting like line breaks from Markdown output
-                outputTextDiv.innerHTML = `<pre>${result.text}</pre>`;
+                const userQuery = `
+                    Startup Name: ${startupName}
+                    Problem: ${problem}
+                    Solution: ${solution}`;
+                // Example using fetch with Google Gemini API (adjust API key and endpoint)
+                const apiKey = "AIzaSyCTDgNxbmRDFNw9RxxSx4zRnGlANKoly9k";
+                apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-                // 2. Display Citations (Hawale Dikhana)
-                if (result.sources && result.sources.length > 0) {
-                    const uniqueSources = Array.from(new Map(result.sources.map(item => [item.uri, item])).values());
-                    citationSourcesDiv.innerHTML = '<h4 class="text-md font-semibold mt-4">Sources (Hawale):</h4><ul class="list-disc ml-5 mt-2 space-y-1">';
-                    uniqueSources.forEach((source, index) => {
-                        citationSourcesDiv.innerHTML += `<li><a href="${source.uri}" target="_blank" class="text-blue-500 hover:text-blue-700">${source.title}</a></li>`;
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+                const result = await response.json();
+                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text || "No pitch generated.";
+
+                // Display AI-generated pitch
+                outputText.innerHTML = `<pre>${aiText}</pre>`;
+                pitchOutput.classList.remove('hidden');
+
+                // Save to Firestore
+                const user = auth.currentUser;
+                if (user) {
+                    await db.collection('users').doc(user.uid).collection('pitches').add({
+                        startupName,
+                        problem,
+                        solution,
+                        pitchText: aiText,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    citationSourcesDiv.innerHTML += '</ul>';
                 }
-
-                // 3. Save the Pitch to Firestore (Pitch ko Mehfooz Karna)
-                await savePitch(startupName, problem, solution, result.text);
-
-                // 4. Show the pitch output section
-                pitchOutputSection.classList.remove('hidden');
-
-            } catch (error) {
-                console.error("Generation Error (Pitch Banane Mein Masla):", error);
-                outputTextDiv.innerHTML = `<p class="text-red-500 font-semibold">Error: ${error.message}</p>`;
-                // Show the output section even for errors
-                pitchOutputSection.classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                outputText.innerHTML = `<p class="text-red-500 font-semibold">Error generating pitch: ${err.message}</p>`;
             } finally {
-                loadingDiv.classList.add('hidden');
+                loading_Div.classList.add('hidden');
                 generateButton.disabled = false;
             }
-        });
 
-        // Start the application
-        initializeFirebase();
+        });
     </script>
 </body>
 
