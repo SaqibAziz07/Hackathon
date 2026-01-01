@@ -1,0 +1,2 @@
+const GOOGLE_AI_API_KEY = "AIzaSyD_7J4Q6Nq42prPWhu0srVx1I3ksuUrX4k";
+const FIREBASE_API_KEY = "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4";
