@@ -1,12 +1,12 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4",
+    apiKey: FIREBASE_API_KEY,
     authDomain: "pitch-craft-a20f2.firebaseapp.com",
     projectId: "pitch-craft-a20f2",
-    storageBucket: "pitch-craft-a20f2.firebasestorage.app",
+    storageBucket: "pitch-craft-a20f2.appspot.com",
     messagingSenderId: "912823133018",
     appId: "1:912823133018:web:0b46413e38559cd2014963",
     measurementId: "G-4EMWVMF2ZL"
-  };
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

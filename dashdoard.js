@@ -1,5 +1,5 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBkDvvZ8URn-bvQWhqbZElEx4POR12tJo4",
+    apiKey: FIREBASE_API_KEY,
     authDomain: "pitch-craft-a20f2.firebaseapp.com",
     projectId: "pitch-craft-a20f2",
     storageBucket: "pitch-craft-a20f2.firebasestorage.app",
