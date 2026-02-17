@@ -1,98 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pitch Craft | Modern Portal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&family=Instrument+Serif&family=Outfit:wght@400;700&display=swap"
-    rel="stylesheet">
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-  <link rel="stylesheet" href="style.css">
-  <script src="./config.js"></script>
-</head>
-
-<body>
-  <div class="bg-blur"></div>
-
-  <div class="container">
-    <div class="form-card" id="login-form">
-      <div class="header">
-        <h1>Pitch Craft</h1>
-        <p>Welcome back! Please enter your details.</p>
-      </div>
-
-      <div class="alert success" id="logout-success">Logged out successfully.</div>
-      <div class="alert error" id="login-error">Invalid credentials.</div>
-
-      <form id="loginForm">
-        <div class="input-group">
-          <input type="email" id="email" required placeholder=" ">
-          <label>Email Address</label>
-        </div>
-
-        <div class="input-group">
-          <input type="password" id="password" required placeholder=" ">
-          <label>Password</label>
-        </div>
-
-        <button type="submit" class="primary-btn">Sign In</button>
-      </form>
-
-      <div class="footer-text">
-        New here? <span class="toggle-link" id="show-register">Create an account</span>
-      </div>
-      <div class="alert error" id="email-error">Email required</div>
-      <div class="alert error" id="password-error">Password required</div>
-      <div class="alert succes" id="login-loading">Logging in...</div>
-
-    </div>
-
-    <div class="form-card" id="register-form" style="display: none;">
-      <div class="header">
-        <h1>Join us</h1>
-        <p>Start your journey with Pitch Craft.</p>
-      </div>
-
-      <form id="registerForm">
-        <div class="input-group">
-          <input type="text" id="reg-username" required placeholder=" ">
-          <label>Full Name</label>
-        </div>
-        <div class="input-group">
-          <input type="email" id="reg-email" required placeholder=" ">
-          <label>Email</label>
-        </div>
-        <div class="input-group">
-          <input type="password" id="reg-password" required placeholder=" ">
-          <label>Password</label>
-        </div>
-        <div class="input-group">
-          <input type="password" id="reg-confirm-password" required placeholder=" ">
-          <label>Password</label>
-        </div>
-        <button type="submit" class="primary-btn">Create Account</button>
-      </form>
-
-      <div class="footer-text">
-        Already a member? <span class="toggle-link" id="show-login">Log in</span>
-      </div>
-      <div class="alert error" id="reg-username-error">Name too short</div>
-      <div class="alert error" id="reg-email-error">Invalid email</div>
-      <div class="alert error" id="reg-password-error">Min 6 characters password</div>
-      <div class="alert error" id="reg-confirm-password-error">Passwords do not match</div>
-      <div class="alert success" id="register-success">Account created!</div>
-      <div class="alert success" id="register-loading">Creating account...</div>
-      <div class="alert error" id="register-error"></div>
-    </div>
-  </div>
-  <script src="./config.js"></script>
-  <script src="app.js"></script>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pitch Craft | Modern Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&family=Instrument+Serif&family=Outfit:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
