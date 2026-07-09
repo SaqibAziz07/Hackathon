@@ -63,7 +63,7 @@ const Dashboard = () => {
       import.meta.env.VITE_GOOGLE_AI_API_KEY,
     );
     return genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-preview-09-2025",
+      model: "gemini-2.5-flash",
     });
   };
 
